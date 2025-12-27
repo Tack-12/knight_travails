@@ -10,35 +10,43 @@ function knightMoves(start, end) {
   let firstNode = new Node(possibleMoves(start), null);
   let visited_positions = [];
   let temp = [];
-  let repeated = false;
+  let path = [];
 
   visited_positions.push(firstNode); // make a node with start and the first value being null
 
   while (visited_positions.length != 0) {
 
+    let prevNode = visited_positions[0]
     let current_position = visited_positions.shift().data;
-    console.log(current_position);
-    console.log(end)
+    let completed = false;
+
+
     current_position.forEach(position => {
-      for (let i = 0; i < temp.length; i++) {
-        if (temp[i].includes(end)) {
-          break;
-        }
-        if (temp[i] == position) {
-          repeated = true;
-        }
+      let repeated = false;
+
+      if (isArrayInArray(temp, end)) {
+        completed = true;
+      }
+      if (isArrayInArray(temp, position)) {
+        repeated = true;
       }
       if (!repeated) {
         temp.push(position);
-        visited_positions.push(new Node(possibleMoves(position), position));
-        repeated = false;
+        visited_positions.push(new Node(possibleMoves(position), prevNode));
       }
-      repeated = false;
     })
 
-    console.log(visited_positions, "and", temp);
+    if (completed) { break };
   }
 
+  console.log(visited_positions[1].prev.prev.data);
+
+  /*  let temp_link = visited_positions[0].prev;
+    while (temp_link !== null) {
+      path.push(temp_link);
+      temp_link = temp_link.prev;
+    }
+  */
 }
 
 // Function to calculate the moves from a given vertex..
@@ -79,5 +87,11 @@ function possibleMoves(start) {
   return possibleMoves;
 }
 
-console.log(knightMoves([0, 0], [3, 3]));
+//function to check if array is inside the list of long arrays
+function isArrayInArray(listArray, singleArray) {
+  const singleArrayString = JSON.stringify(singleArray);
+  return listArray.some(subArray => JSON.stringify(subArray) === singleArrayString);
+}
+
+knightMoves([0, 0], [3, 3]);
 
