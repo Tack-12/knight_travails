@@ -1,4 +1,43 @@
+class Node {
+  constructor(data = null, prev = null) {
+    this.data = data;
+    this.prev = prev;
+  }
+}
+
+
 function knightMoves(start, end) {
+  let firstNode = new Node(possibleMoves(start), null);
+  let visited_positions = [];
+  let temp = [];
+  let repeated = false;
+
+  visited_positions.push(firstNode); // make a node with start and the first value being null
+
+  while (visited_positions.length != 0) {
+
+    let current_position = visited_positions.shift().data;
+    console.log(current_position);
+    console.log(end)
+    current_position.forEach(position => {
+      for (let i = 0; i < temp.length; i++) {
+        if (temp[i].includes(end)) {
+          break;
+        }
+        if (temp[i] == position) {
+          repeated = true;
+        }
+      }
+      if (!repeated) {
+        temp.push(position);
+        visited_positions.push(new Node(possibleMoves(position), position));
+        repeated = false;
+      }
+      repeated = false;
+    })
+
+    console.log(visited_positions, "and", temp);
+  }
 
 }
 
@@ -40,5 +79,5 @@ function possibleMoves(start) {
   return possibleMoves;
 }
 
-console.log(possibleMoves([0, 0]));
+console.log(knightMoves([0, 0], [3, 3]));
 
