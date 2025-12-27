@@ -1,24 +1,17 @@
-class Node {
-  constructor(data = null, prev = null) {
-    this.data = data;
-    this.prev = prev;
-  }
-}
-
+import { LinkedList } from "../Algorithms/linked-list.js";
 
 function knightMoves(start, end) {
-  let firstNode = new Node(possibleMoves(start), null);
+  let linkedlist = new LinkedList();
   let visited_positions = [];
   let temp = [];
-  //let path = [];
-  visited_positions.push(firstNode); // make a node with start and the first value being null
+  let path = [];
+  visited_positions.push(start); // make a node with start and the first value being null
+  linkedlist.appendValue(start);
 
   while (visited_positions.length != 0) {
 
-    let prevNode = visited_positions[0]
-    let current_position = visited_positions.shift().data;
     let completed = false;
-
+    let current_position = visited_positions.shift();
 
     current_position.forEach(position => {
       let repeated = false;
@@ -31,21 +24,17 @@ function knightMoves(start, end) {
       }
       if (!repeated && position != []) {
         temp.push(position);
-        visited_positions.push(new Node(possibleMoves(position), [prevNode, position]));
+        visited_positions.push(possibleMoves(start));
+        linkedlist.appendValue(position);
       }
     })
 
     if (completed) { break };
   }
 
-  console.log(visited_positions);
+  console.log(linkedlist, temp);
+  linkedlist.toString();
 
-  /*  let temp_link = visited_positions[0].prev;
-    while (temp_link !== null) {
-      path.push(temp_link);
-      temp_link = temp_link.prev;
-    }
-  */
 }
 
 // Function to calculate the moves from a given vertex..
