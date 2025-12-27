@@ -10,8 +10,7 @@ function knightMoves(start, end) {
   let firstNode = new Node(possibleMoves(start), null);
   let visited_positions = [];
   let temp = [];
-  let path = [];
-
+  //let path = [];
   visited_positions.push(firstNode); // make a node with start and the first value being null
 
   while (visited_positions.length != 0) {
@@ -30,16 +29,16 @@ function knightMoves(start, end) {
       if (isArrayInArray(temp, position)) {
         repeated = true;
       }
-      if (!repeated) {
+      if (!repeated && position != []) {
         temp.push(position);
-        visited_positions.push(new Node(possibleMoves(position), prevNode));
+        visited_positions.push(new Node(possibleMoves(position), [prevNode, position]));
       }
     })
 
     if (completed) { break };
   }
 
-  console.log(visited_positions[1].prev.prev.data);
+  console.log(visited_positions);
 
   /*  let temp_link = visited_positions[0].prev;
     while (temp_link !== null) {
@@ -79,7 +78,7 @@ function possibleMoves(start) {
 
   for (let i = 0; i < allMoves.length; i++) {
     //check if the move is still inside the board (0-7)
-    if (allMoves[i][0] > 0 && allMoves[i][0] < 7 && allMoves[i][1] > 0 && allMoves[i][1] < 7) {
+    if (allMoves[i][0] >= 0 && allMoves[i][0] <= 7 && allMoves[i][1] >= 0 && allMoves[i][1] <= 7) {
       possibleMoves.push(allMoves[i]);
     }
   }
@@ -93,5 +92,5 @@ function isArrayInArray(listArray, singleArray) {
   return listArray.some(subArray => JSON.stringify(subArray) === singleArrayString);
 }
 
-knightMoves([0, 0], [3, 3]);
+knightMoves([3, 3], [0, 0]);
 
