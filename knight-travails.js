@@ -1,40 +1,31 @@
 import { LinkedList } from "../Algorithms/linked-list.js";
 
 function knightMoves(start, end) {
-  let linkedlist = new LinkedList();
-  let visited_positions = [];
-  let temp = [];
-  let path = [];
-  visited_positions.push(start); // make a node with start and the first value being null
-  linkedlist.appendValue(start);
 
-  while (visited_positions.length != 0) {
-
-    let completed = false;
-    let current_position = visited_positions.shift();
-
-    current_position.forEach(position => {
-      let repeated = false;
-
-      if (isArrayInArray(temp, end)) {
-        completed = true;
-      }
-      if (isArrayInArray(temp, position)) {
-        repeated = true;
-      }
-      if (!repeated && position != []) {
-        temp.push(position);
-        visited_positions.push(possibleMoves(start));
-        linkedlist.appendValue(position);
-      }
-    })
-
-    if (completed) { break };
+  if (!start || !end) {
+    return null;
   }
 
-  console.log(linkedlist, temp);
-  linkedlist.toString();
+  const queue = [start];// queue to enque and deque the possible values
+  const visited = new Set(); //An array with no repetetions :)
 
+  while (queue.length >= 1) {
+    if (visited.has(JSON.stringify(end))) {
+      break;
+    }
+    const temp_val = queue.shift(); //stores the first variable of the queue
+    const possible_moves = possibleMoves(temp_val);
+
+    for (const moves of possible_moves) {
+
+      if (!visited.has(JSON.stringify(moves))) {
+        visited.add(JSON.stringify(moves));
+        queue.push(moves);
+        console.log(moves);
+      }
+    }
+
+  }
 }
 
 // Function to calculate the moves from a given vertex..
@@ -75,11 +66,5 @@ function possibleMoves(start) {
   return possibleMoves;
 }
 
-//function to check if array is inside the list of long arrays
-function isArrayInArray(listArray, singleArray) {
-  const singleArrayString = JSON.stringify(singleArray);
-  return listArray.some(subArray => JSON.stringify(subArray) === singleArrayString);
-}
-
-knightMoves([3, 3], [0, 0]);
+knightMoves([0, 0], [3, 3]);
 
