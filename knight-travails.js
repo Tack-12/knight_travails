@@ -1,5 +1,3 @@
-import { LinkedList } from "../Algorithms/linked-list.js";
-
 function knightMoves(start, end) {
 
   if (!start || !end) {
@@ -8,11 +6,9 @@ function knightMoves(start, end) {
 
   const queue = [start];// queue to enque and deque the possible values
   const visited = new Set(); //An array with no repetetions :)
+  const backtrack = new Map();
 
-  while (queue.length >= 1) {
-    if (visited.has(JSON.stringify(end))) {
-      break;
-    }
+  while (queue.length >= 1 && !visited.has(JSON.stringify(end))) {
     const temp_val = queue.shift(); //stores the first variable of the queue
     const possible_moves = possibleMoves(temp_val);
 
@@ -20,14 +16,39 @@ function knightMoves(start, end) {
 
       if (!visited.has(JSON.stringify(moves))) {
         visited.add(JSON.stringify(moves));
+        backtrack.set(moves, temp_val);
         queue.push(moves);
-        console.log(moves);
       }
     }
-
   }
-}
 
+  //BackTrack the nodes.
+
+  let searching_val = JSON.stringify(end);
+  console.log(searching_val, (JSON.stringify(start)))
+  const track = [];
+  while (searching_val != (JSON.stringify(start))) {
+    for (let [key, value] of backtrack.entries()) {
+      key = JSON.stringify(key);
+      value = JSON.stringify(value);
+      if (key == searching_val) {
+        searching_val = value;
+        track.push(key);
+      }
+      if (searching_val == (JSON.stringify(start))) {
+        track.push(searching_val);
+        break;
+      }
+    }
+  }
+
+  //LOG: 
+  console.log(`You made it in : ${track.length} moves`);
+  for (let i = track.length - 1; i >= 0; i--) {
+    console.log(track[i]);
+  }
+
+}
 // Function to calculate the moves from a given vertex..
 function calculateMoves(start) {
   let allPossibleMoves = [];
@@ -66,5 +87,5 @@ function possibleMoves(start) {
   return possibleMoves;
 }
 
-knightMoves([0, 0], [3, 3]);
+knightMoves([0, 0], [7, 7]);
 
